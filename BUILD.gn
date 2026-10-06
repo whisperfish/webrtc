@@ -528,6 +528,9 @@ if (!rtc_build_ssl) {
   config("external_ssl_library") {
     if (rtc_ssl_root != "") {
       include_dirs = [ rtc_ssl_root ]
+      # OpenSSL 3.x deprecates several low-level APIs used here
+      # (RSA_new, EC_KEY_*, ...); expected and accepted for system SSL.
+      cflags = [ "-Wno-deprecated-declarations" ]
     }
     libs = [
       "crypto",

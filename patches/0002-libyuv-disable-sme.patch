@@ -1,0 +1,16 @@
+diff --git a/third_party/libyuv/libyuv.gni b/third_party/libyuv/libyuv.gni
+index 272277a..dc07a01 100644
+--- a/third_party/libyuv/libyuv.gni
++++ b/third_party/libyuv/libyuv.gni
+@@ -23,7 +23,10 @@ declare_args() {
+   # errors on Fuchsia, macOS, and compilation errors on Windows.
+   # TODO: bug 359006069 - Remove the restriction after the linker and
+   # compilation errors are fixed.
+-  libyuv_use_sme = current_cpu == "arm64" && (is_linux || is_android)
++  # SME disabled: the SME runtime helpers (__arm_tpidr2_save etc.) are not
++  # available in the SailfishOS aarch64 toolchain's libgcc, and no SailfishOS
++  # device has SME hardware anyway. See the Fuchsia/macOS/Windows comment above.
++  libyuv_use_sme = false
+   libyuv_use_msa =
+       (current_cpu == "mips64el" || current_cpu == "mipsel") && mips_use_msa
+   libyuv_use_mmi =
